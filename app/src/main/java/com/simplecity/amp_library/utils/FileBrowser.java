@@ -203,6 +203,7 @@ public class FileBrowser {
                 break;
             case SortManager.SortFiles.DEFAULT:
             default:
+                Collections.sort(baseFileObjects, filenameComparator());
                 Collections.sort(baseFileObjects, trackNumberComparator());
                 Collections.sort(baseFileObjects, albumNameComparator());
                 Collections.sort(baseFileObjects, artistNameComparator());
@@ -259,7 +260,8 @@ public class FileBrowser {
     }
 
     private Comparator filenameComparator() {
-        return (Comparator<BaseFileObject>) (lhs, rhs) -> lhs.name.compareToIgnoreCase(rhs.name);
+        Comparator cmp = new NaturalOrderComparator();
+        return (Comparator<BaseFileObject>) (lhs, rhs) -> cmp.compare(lhs.name, rhs.name);
     }
 
     //    private Comparator durationComparator() {
