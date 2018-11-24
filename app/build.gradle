@@ -115,7 +115,7 @@ android {
         def buildTypes = variant.buildType*.name
 
         def debugFilters = ["paid", "free", 'amazonPaid', "amazonFree"]
-        def relFilters = ["dev"]
+        def relFilters = ["dev", "paid", "free", 'amazonPaid', "amazonFree"]
 
         if (System.getenv("TRAVIS")) {
             relFilters << "dev"

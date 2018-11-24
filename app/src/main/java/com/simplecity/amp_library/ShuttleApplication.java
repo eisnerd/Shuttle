@@ -105,12 +105,12 @@ public class ShuttleApplication extends DaggerApplication {
             // enableStrictMode();
         }
 
-        refWatcher = LeakCanary.install(this);
+        //refWatcher = LeakCanary.install(this);
         // workaround to fix InputMethodManager leak as suggested by LeakCanary lib
         InputMethodManagerLeaks.fixFocusedViewLeak(this);
 
         //Crashlytics
-        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
+        /*CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
                 .disabled(BuildConfig.DEBUG)
                 .build();
 
@@ -119,6 +119,7 @@ public class ShuttleApplication extends DaggerApplication {
                         .core(crashlyticsCore)
                         .answers(new Answers())
                         .build());
+        */
 
         // Firebase
         FirebaseApp.initializeApp(this);

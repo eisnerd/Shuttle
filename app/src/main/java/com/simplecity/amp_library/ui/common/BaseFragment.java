@@ -112,7 +112,8 @@ public abstract class BaseFragment extends BaseController {
 
         super.onDestroy();
         RefWatcher refWatcher = ((ShuttleApplication) getContext().getApplicationContext()).getRefWatcher();
-        refWatcher.watch(this);
+        if (refWatcher != null)
+            refWatcher.watch(this);
     }
 
     public MediaManager getMediaManager() {

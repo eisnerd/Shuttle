@@ -4,6 +4,8 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
+
+import com.simplecity.amp_library.utils.sorting.NaturalOrderComparator;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.interfaces.FileType;
 import com.simplecity.amp_library.model.BaseFileObject;
