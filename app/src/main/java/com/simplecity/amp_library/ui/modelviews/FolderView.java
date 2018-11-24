@@ -154,7 +154,7 @@ public class FolderView extends BaseSelectableViewModel<FolderView.ViewHolder> {
         super.bindView(holder);
 
         if (baseFileObject instanceof FileObject && settingsManager.getFolderBrowserShowFileNames()) {
-            holder.lineFour.setText(String.format("%s.%s", ((FileObject) baseFileObject).name, ((FileObject) baseFileObject).extension));
+            holder.lineFour.setText(String.format("%s", ((FileObject) baseFileObject).name, ((FileObject) baseFileObject).extension));
             holder.lineFour.setVisibility(View.VISIBLE);
             holder.textContainer.setVisibility(View.GONE);
         } else {
@@ -207,7 +207,7 @@ public class FolderView extends BaseSelectableViewModel<FolderView.ViewHolder> {
         super.bindView(holder, position, payloads);
 
         if (baseFileObject instanceof FileObject && settingsManager.getFolderBrowserShowFileNames()) {
-            holder.lineFour.setText(String.format("%s.%s", ((FileObject) baseFileObject).name, ((FileObject) baseFileObject).extension));
+            holder.lineFour.setText(String.format("%s", ((FileObject) baseFileObject).name, ((FileObject) baseFileObject).extension));
             holder.lineFour.setVisibility(View.VISIBLE);
             holder.textContainer.setVisibility(View.GONE);
         } else {
