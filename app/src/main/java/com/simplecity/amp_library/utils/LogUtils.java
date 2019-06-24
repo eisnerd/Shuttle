@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.simplecity.amp_library.BuildConfig;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class LogUtils {
 
@@ -21,5 +23,11 @@ public class LogUtils {
             Crashlytics.log(Log.ERROR, tag, message + "\nThrowable: " + (throwable != null ? throwable.getMessage() : null));
             Crashlytics.logException(throwable);
         }
+    }
+
+    public static void logStack(String tag) {
+        StringWriter trace = new StringWriter();
+        new Exception("Stack trace").printStackTrace(new PrintWriter(trace));
+        Log.i(tag, trace.toString());
     }
 }

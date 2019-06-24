@@ -173,6 +173,7 @@ class MediaSessionManager {
         });
 
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
+        LogUtils.logStack("Shuttle Bluetooth");
 
         //For some reason, MediaSessionCompat doesn't seem to pass all of the available 'actions' on as
         //transport control flags for the RCC, so we do that manually
@@ -193,6 +194,7 @@ class MediaSessionManager {
         intentFilter.addAction(InternalIntents.PLAY_STATE_CHANGED);
         intentFilter.addAction(InternalIntents.POSITION_CHANGED);
         disposables.add(RxBroadcast.fromBroadcast(context, intentFilter).subscribe(intent -> {
+            LogUtils.logStack("Shuttle Bluetooth");
             String action = intent.getAction();
             if (action != null) {
                 updateMediaSession(intent.getAction());
@@ -324,6 +326,7 @@ class MediaSessionManager {
     }
 
     void destroy() {
+        LogUtils.logStack("Shuttle Bluetooth");
         disposables.clear();
     }
 }

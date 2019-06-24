@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import com.simplecity.amp_library.R;
 import com.simplecity.amp_library.playback.MusicService;
@@ -47,6 +48,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        LogUtils.logStack("Shuttle Bluetooth");
         super.onReceive(context, intent);
 
         handleIntent(context, intent, playbackSettingsManager);
@@ -57,6 +59,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
     }
 
     public static void handleIntent(Context context, Intent intent, PlaybackSettingsManager playbackSettingsManager) {
+        LogUtils.logStack("Shuttle Bluetooth");
         String intentAction = intent.getAction();
 
         if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intentAction) && playbackSettingsManager.getPauseOnHeadsetDisconnect()) {
@@ -167,6 +170,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
     }
 
     static void startService(Context context, String command) {
+        LogUtils.logStack("Shuttle Bluetooth");
 
         // If we're attempting to pause, and the service isn't already running, return we will call startForegroundService,
         // and then not proceed to call startForeground() on the service, since the service basically gets shutdown again
@@ -191,6 +195,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
     }
 
     static void acquireWakeLockAndSendMessage(Context context, Message msg, long delay) {
+        LogUtils.logStack("Shuttle Bluetooth");
         if (wakeLock == null) {
             Context appContext = context.getApplicationContext();
             PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
@@ -209,6 +214,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
             return;
         }
 
+        LogUtils.logStack("Shuttle Bluetooth");
         if (wakeLock != null) {
             wakeLock.release();
             wakeLock = null;
@@ -219,6 +225,7 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
 
         @Override
         public void handleMessage(Message msg) {
+            LogUtils.logStack("Shuttle Bluetooth");
 
             switch (msg.what) {
                 case MSG_LONGPRESS_TIMEOUT:
