@@ -325,6 +325,5 @@ class MediaSessionManager {
 
     void destroy() {
         disposables.clear();
-        mediaSession.release();
     }
 }

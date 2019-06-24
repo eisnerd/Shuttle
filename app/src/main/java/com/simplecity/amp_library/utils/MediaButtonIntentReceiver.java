@@ -168,14 +168,11 @@ public class MediaButtonIntentReceiver extends DaggerBroadcastReceiver {
 
     static void startService(Context context, String command) {
 
-        // If we're attempting to pause, and the service isn't already running, return early. This prevents an issue where
-        // we call startForegroundService, and then we don't proceed to call startForeground() on the service, since the service
-        // basically gets shutdown again due to the fact that we're not playing anything.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && MediaButtonCommand.PAUSE.equals(command)) {
-            if (MusicServiceConnectionUtils.serviceBinder == null || MusicServiceConnectionUtils.serviceBinder.getService() == null) {
-                return;
-            }
-        }
+        // If we're attempting to pause, and the service isn't already running, return we will call startForegroundService,
+        // and then not proceed to call startForeground() on the service, since the service basically gets shutdown again
+        // due to the fact that we're not playing anything. However, when the service has been started from a media button
+        // after being in the background for a long time, MusicServiceConnectionUtils.serviceBinder.getService gives null,
+        // even though the music is playing, so we have to startForegroundService in order for pause to continue functioning.
 
         Intent intent = new Intent(context, MusicService.class);
         intent.setAction(ServiceCommand.COMMAND);
