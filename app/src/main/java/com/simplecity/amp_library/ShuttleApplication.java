@@ -166,12 +166,12 @@ public class ShuttleApplication extends DaggerApplication {
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
-        Completable.timer(5, TimeUnit.SECONDS)
+        /*Completable.timer(5, TimeUnit.SECONDS)
                 .andThen(Completable.defer(this::repairMediaStoreYearFromTags))
                 .doOnError(throwable -> LogUtils.logException(TAG, "Failed to update year from tags", throwable))
                 .onErrorComplete()
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe();*/
 
         Completable.timer(10, TimeUnit.SECONDS)
                 .andThen(Completable.defer(this::cleanGenres))
@@ -360,7 +360,7 @@ public class ShuttleApplication extends DaggerApplication {
                                             }
                                         }
                                     } catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException | OutOfMemoryError e) {
-                                        LogUtils.logException(TAG, "Failed to repair media store year", e);
+                                        LogUtils.logException(TAG, "Failed to repair media store year for " + song.path, e);
                                     }
                                 }
                             }
