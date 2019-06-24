@@ -12,6 +12,17 @@
             android:summary="@string/pref_summary_remember_shuffle"
             android:title="@string/pref_title_remember_shuffle"/>
 
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_pause_on_transient_focus_loss"
+            android:summary="@string/pref_summary_pause_on_transient_focus_loss"
+            android:title="@string/pref_title_pause_on_transient_focus_loss"/>
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_pause_on_permanent_focus_loss"
+            android:summary="@string/pref_summary_pause_on_permanent_focus_loss"
+            android:title="@string/pref_title_pause_on_permanent_focus_loss"/>
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>

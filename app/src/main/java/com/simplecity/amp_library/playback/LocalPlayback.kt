@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
+import android.preference.PreferenceManager
 import android.support.annotation.CallSuper
 import android.util.Log
 import com.simplecity.amp_library.playback.Playback.Callbacks
@@ -77,12 +78,18 @@ abstract class LocalPlayback(context: Context) : Playback {
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                 // Lost audio focus, but will gain it back (shortly), so note whether
                 // playback should resume
-                currentAudioFocusState = AudioFocus.NO_FOCUS_NO_DUCK
-                playOnFocusGain = isPlaying
+                var prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                if (prefs.getBoolean("pref_pause_on_transient_focus_loss", true)) {
+                    currentAudioFocusState = AudioFocus.NO_FOCUS_NO_DUCK
+                    playOnFocusGain = isPlaying
+                }
             }
-            AudioManager.AUDIOFOCUS_LOSS ->
+            AudioManager.AUDIOFOCUS_LOSS -> {
                 // Lost audio focus, probably "permanently"
-                currentAudioFocusState = AudioFocus.NO_FOCUS_NO_DUCK
+                var prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                if (prefs.getBoolean("pref_pause_on_permanent_focus_loss", true))
+                    currentAudioFocusState = AudioFocus.NO_FOCUS_NO_DUCK
+            }
         }
 
         // Update the player state based on the change

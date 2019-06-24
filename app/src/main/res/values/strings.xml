@@ -415,6 +415,14 @@
     <string name="pref_title_remember_shuffle">Remember shuffle mode</string>
     <!-- Settings summary for toggling 'remember shuff'e-->
     <string name="pref_summary_remember_shuffle">Shuffle mode won\'t turn off when playing a new list of songs</string>
+    <!-- Settings title for transient focus loss-->
+    <string name="pref_title_pause_on_transient_focus_loss">Pause on short focus loss</string>
+    <!-- Settings summary for transient focus loss-->
+    <string name="pref_summary_pause_on_transient_focus_loss">Pause during short interruptions, such as notifications, and resume afterwards</string>
+    <!-- Settings title for permanent focus loss-->
+    <string name="pref_title_pause_on_permanent_focus_loss">Pause on long focus loss</string>
+    <!-- Settings summary for permanent focus loss-->
+    <string name="pref_summary_pause_on_permanent_focus_loss">Pause when another player, a game, etc. starts playing</string>
 
 
     <string name="pref_title_version">Version</string>
