@@ -166,6 +166,14 @@ public class SettingsManager extends BaseSettingsManager {
         return getBool("audiofx.global.enable", false);
     }
 
+    public static final String KEY_PREF_VOLUME = "pref_playback_volume";
+    public float getVolume() {
+        return getFloat(KEY_PREF_VOLUME, 1.0f);
+    }
+    public void setVolume(float volume) {
+        setFloat(KEY_PREF_VOLUME, volume);
+    }
+
     private static final String DOCUMENT_TREE_URI = "document_tree_uri";
 
     public void setDocumentTreeUri(String documentTreeUri) {

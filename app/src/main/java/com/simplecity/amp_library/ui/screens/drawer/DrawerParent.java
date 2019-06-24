@@ -2,16 +2,20 @@ package com.simplecity.amp_library.ui.screens.drawer;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +75,16 @@ public class DrawerParent implements Parent<DrawerChild> {
                 settingsManager);
     }
 
+    static DrawerParent getVolumeParent(SettingsManager settingsManager) {
+        return new DrawerParent(
+                Type.VOLUME,
+                -1,
+                R.drawable.ic_volume_high_24dp,
+                NavigationEventRelay.volumeSelectedEvent,
+                false,
+                settingsManager);
+    }
+
     static DrawerParent getSettingsParent(SettingsManager settingsManager) {
         return new DrawerParent(
                 Type.SETTINGS,
@@ -115,6 +129,7 @@ public class DrawerParent implements Parent<DrawerChild> {
         int EQUALIZER = 4;
         int SETTINGS = 5;
         int SUPPORT = 6;
+        int VOLUME = 7;
     }
 
     private boolean selectable = true;
@@ -249,6 +264,48 @@ public class DrawerParent implements Parent<DrawerChild> {
         } else {
             holder.timeRemaining.setVisibility(View.GONE);
         }
+
+        if (type == Type.VOLUME) {
+            holder.lineOne.setVisibility(View.GONE);
+            final float max = holder.slider.getMax();
+            holder.slider.setProgress((int)(settingsManager.getVolume() * max));
+            holder.slider.setVisibility(View.VISIBLE);
+            holder.slider.setOnTouchListener((View view, MotionEvent motionEvent) -> {
+                int action = motionEvent.getAction();
+                switch (action)
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow Drawer to intercept touch events.
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow Drawer to intercept touch events.
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle seekbar touch events.
+                view.onTouchEvent(motionEvent);
+                return true;
+            });
+            holder.slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    settingsManager.setVolume(i / max);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    // TODO: save settings less often by doing it here
+                }
+            });
+        }
     }
 
     static class ParentHolder extends ParentViewHolder {
@@ -260,6 +317,9 @@ public class DrawerParent implements Parent<DrawerChild> {
 
         @BindView(R.id.line_one)
         TextView lineOne;
+
+        @BindView(R.id.slider)
+        SeekBar slider;
 
         @BindView(R.id.expandable_icon)
         ImageView expandableIcon;

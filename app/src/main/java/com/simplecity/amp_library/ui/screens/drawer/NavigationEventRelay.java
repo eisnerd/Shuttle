@@ -16,6 +16,7 @@ public class NavigationEventRelay {
     static NavigationEvent librarySelectedEvent = new NavigationEvent(NavigationEvent.Type.LIBRARY_SELECTED);
     static NavigationEvent sleepTimerSelectedEvent = new NavigationEvent(NavigationEvent.Type.SLEEP_TIMER_SELECTED);
     static NavigationEvent equalizerSelectedEvent = new NavigationEvent(NavigationEvent.Type.EQUALIZER_SELECTED);
+    static NavigationEvent volumeSelectedEvent = new NavigationEvent(NavigationEvent.Type.VOLUME_SELECTED);
     static NavigationEvent settingsSelectedEvent = new NavigationEvent(NavigationEvent.Type.SETTINGS_SELECTED);
     static NavigationEvent supportSelectedEvent = new NavigationEvent(NavigationEvent.Type.SUPPORT_SELECTED);
 
@@ -57,6 +58,7 @@ public class NavigationEventRelay {
             int GO_TO_ARTIST = 7;
             int GO_TO_ALBUM = 8;
             int GO_TO_GENRE = 9;
+            int VOLUME_SELECTED = 10;
         }
 
         @Type

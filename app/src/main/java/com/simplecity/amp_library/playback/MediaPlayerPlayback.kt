@@ -5,19 +5,22 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.PowerManager
+import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.Log
 import com.simplecity.amp_library.model.Song
 import com.simplecity.amp_library.utils.LogUtils
+import com.simplecity.amp_library.utils.SettingsManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
-
+internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, OnSharedPreferenceChangeListener {
     private var currentMediaPlayer: MediaPlayer? = createMediaPlayer(context)
     private var nextMediaPlayer: MediaPlayer? = null
 
@@ -26,6 +29,21 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
     private var isFadingDown: Boolean = false
     private var isFadingUp: Boolean = false
     private var fadeAnimator: ValueAnimator? = null
+
+    private val settingsManager = SettingsManager(PreferenceManager.getDefaultSharedPreferences(context))
+
+    private var volumeScale = 1.0f
+
+    init {
+        applyVolume()
+        settingsManager.listen(this)
+    }
+
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
+        if (key == SettingsManager.KEY_PREF_VOLUME) {
+            applyVolume()
+        }
+    }
 
     override val isPlaying: Boolean
         get() = synchronized(this) {
@@ -255,13 +273,19 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
         synchronized(this) {
             if (isInitialized) {
                 try {
-                    currentMediaPlayer?.setVolume(volume, volume)
+
+                    currentMediaPlayer?.setVolume(volume * volumeScale, volume * volumeScale)
                 } catch (e: IllegalStateException) {
                     Log.e(TAG, "Error setting MediaPlayerPlayback volume: " + e.localizedMessage)
                 }
 
             }
         }
+    }
+
+    private fun applyVolume() {
+        volumeScale = settingsManager.volume;
+        setVolume(Volume.NORMAL)
     }
 
     override val resumeWhenSwitched: Boolean = false
@@ -272,6 +296,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
                 isInitialized = false
                 currentMediaPlayer?.release()
                 currentMediaPlayer = createMediaPlayer(context)
+                applyVolume()
                 callbacks?.onError(this, "Server died")
                 return true
             }
@@ -287,6 +312,7 @@ internal class MediaPlayerPlayback(context: Context) : LocalPlayback(context), M
         if (mediaPlayer === currentMediaPlayer && nextMediaPlayer != null) {
             currentMediaPlayer?.release()
             currentMediaPlayer = nextMediaPlayer
+            applyVolume()
             nextMediaPlayer = null
             callbacks?.onTrackEnded(this, true)
         } else {

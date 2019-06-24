@@ -4,6 +4,10 @@ import android.content.SharedPreferences
 
 open class BaseSettingsManager(private val sharedPreferences: SharedPreferences) {
 
+    fun listen(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
     @JvmOverloads
     fun getString(key: String, defaultValue: String? = null): String? {
         return sharedPreferences.getString(key, defaultValue)
@@ -42,6 +46,16 @@ open class BaseSettingsManager(private val sharedPreferences: SharedPreferences)
     fun setLong(key: String, value: Long) {
         val editor = sharedPreferences.edit()
         editor.putLong(key, value)
+        editor.apply()
+    }
+
+    fun getFloat(key: String, defaultValue: Float): Float {
+        return sharedPreferences.getFloat(key, defaultValue)
+    }
+
+    fun setFloat(key: String, value: Float) {
+        val editor = sharedPreferences.edit()
+        editor.putFloat(key, value)
         editor.apply()
     }
 }

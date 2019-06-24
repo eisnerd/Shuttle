@@ -112,6 +112,7 @@ class DrawerFragment : BaseFragment(), DrawerView, View.OnCreateContextMenuListe
         drawerParents!!.add(DrawerParent.getFolderParent(context!!, settingsManager))
         drawerParents!!.add(playlistDrawerParent!!)
         drawerParents!!.add(DrawerDivider())
+        drawerParents!!.add(DrawerParent.getVolumeParent(settingsManager))
         drawerParents!!.add(DrawerParent.getSleepTimerParent(settingsManager))
         drawerParents!!.add(DrawerParent.getEqualizerParent(settingsManager))
         drawerParents!!.add(DrawerParent.getSettingsParent(settingsManager))
